@@ -2,12 +2,19 @@ package com.hyp.learn.ssb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class SecuritySpringBootApplication {
+public class SecuritySpringBootApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(SecuritySpringBootApplication.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SecuritySpringBootApplication.class);
     }
 
 }
