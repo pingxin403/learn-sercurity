@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hyp.learn</groupId>
-    <artifactId>distributed-security-mybatis</artifactId>
+    <artifactId>distributed-security-sc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 

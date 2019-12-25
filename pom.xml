@@ -19,8 +19,7 @@
         <module>security-springmvc</module>
         <module>security-spring-security</module>
         <module>security-spring-boot</module>
-        <module>distributed-security</module>
-        <module>distributed-security-mybatis</module>
+        <module>distributed-security-sc</module>
 
     </modules>
 
