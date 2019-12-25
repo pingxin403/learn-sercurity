@@ -1,0 +1,35 @@
+
+server:
+  port: 8081
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol_header: x-forwarded-proto
+  use-forward-headers: true
+  servlet:
+    context-path: /order
+
+spring:
+  application:
+    name: order-server
+  main:
+    allow-bean-definition-overriding: true
+  http:
+    encoding:
+      enabled: true
+      charset: utf-8
+      force: true
+
+feign:
+  hystrix:
+    enabled: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+
+
+logging:
+  level: info

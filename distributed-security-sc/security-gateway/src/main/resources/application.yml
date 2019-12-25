@@ -1,0 +1,40 @@
+server:
+  port: 10000
+
+spring:
+  application:
+    name: distrbuted-geteway
+  main:
+    allow-bean-definition-overriding: true
+zuul:
+  retryable: true
+  routes:
+    uaa-service:
+      path: /uaa/**
+      serviceId: uaa-service
+      stripPrefix: false
+    order-service:
+      path: /order/**
+      serviceId: order-service
+      stripPrefix: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info,env
+
+feign:
+  compression:
+    request:
+      enabled: true
+  hystrix:
+    enabled: true
+logging:
+  level: info

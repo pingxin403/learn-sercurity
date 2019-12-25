@@ -1,0 +1,64 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /uaa
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol_header: x-forwarded-proto
+  use-forward-headers: true
+
+spring:
+  application:
+    name: uaa-service
+  datasource:
+    #    url: jdbc:mysql://localhost:3306/user_db?useUnicode=true&characterEncoding=utf8
+    #    username: root
+    #    password: 784243
+    #    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:h2:mem:security?;DB_CLOSE_DELAY=-1;INIT=create schema if not exists security
+    username: sa
+    password: 123456
+    schema: classpath:db/schema.sql
+    data: classpath:db/data.sql
+    driver-class-name: org.h2.Driver
+
+  main:
+    allow-bean-definition-overriding: true
+  http:
+    encoding:
+      enabled: true
+      charset: utf-8
+      force: true
+
+
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0
+    lettuce:
+      pool:
+        max-active: 32
+        max-wait: 300ms
+        max-idle: 16
+        min-idle: 8
+  h2:
+    console:
+      enabled: true
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+feign:
+  hystrix:
+    enabled: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
