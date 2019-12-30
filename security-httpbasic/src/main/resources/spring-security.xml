@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!-- <security:http>: spring过滤器链配置：
+             1）需要拦截什么资源
+             2）什么资源什么角色权限
+             3）定义认证方式：HttpBasic，FormLogin（*）
+             4）定义登录页面，定义登录请求地址，定义错误处理方式
+         -->
+    <security:http>
+        <!--
+            pattern: 需要拦截资源
+            access: 拦截方式
+                    isFullyAuthenticated(): 该资源需要认证才可以访问
+                    isAnonymous():只有匿名用户才可以访问（如果登录用户就无法访问）
+                    permitAll():允许所有人（匿名和登录用户）方法
+
+        -->
+        <security:intercept-url pattern="/product/index" access="permitAll()"/>
+        <security:intercept-url pattern="/userLogin" access="permitAll()"/>
+        <security:intercept-url pattern="/product/add" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/product/update" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/product/list" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/product/delete" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/**" access="isFullyAuthenticated()"/>
+
+        <!-- security:http-basic: 使用HttpBasic方式进行登录（认证） -->
+        <!--<security:http-basic/>-->
+
+        <!--
+        login-page: 自定义登录页面
+         login-processing-url:登录请求地址
+         -->
+        <security:form-login login-page="/userLogin" login-processing-url="/securityLogin" default-target-url="/product/index" authentication-success-handler-ref="myAuthenticationSuccessHandler" authentication-failure-handler-ref="myAuthenticationFailureHandler"/>
+
+        <!-- 自定义权限不足处理 -->
+        <security:access-denied-handler error-page="/error"/>
+
+
+        <!-- 关闭Spring Security CSRF机制 -->
+        <security:csrf disabled="true"/>
+    </security:http>
+
+    <!--
+       security:authentication-manager： 认证管理器
+            1）认证信息提供方式（账户名，密码，当前用户权限）
+    -->
+    <security:authentication-manager>
+        <!--认证提供者，执行具体的认证逻辑（此处配置自己的bean）-->
+        <security:authentication-provider user-service-ref="myUserDetailService">
+            <!--<security:user-service>
+                &lt;!&ndash;<security:user name="eric" password="123456" authorities="ROLE_USER"/>
+                <security:user name="jack" password="123456" authorities="ROLE_ADMIN"/>&ndash;&gt;
+            </security:user-service>-->
+
+
+            <!--spring security 5.X版本需要提供一个PasswordEncorder的实例，否则后台汇报错误-->
+            <!--指定密码加密策略-->
+            <security:password-encoder ref="passwordEncoder"/>
+        </security:authentication-provider>
+
+    </security:authentication-manager>
+
+
+    <bean class="com.hyp.learn.security.hb.security.MyPasswordEncorder" id="passwordEncoder"/>
+
+    <!--配置密码加密对象（加密类型，可以不使用BCrypt，换做md5等加密算法也可
+以，具体要看自己存入数据库密码时使用的什么加密算法，那么我们校验时要使用相
+同的加密算法）-->
+    <!--<bean id="passwordEncoder"-->
+    <!--class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />-->
+
+
+    <!--注入到需要使用加密的bean中-->
+    <bean id="myUserDetailService" class="com.hyp.learn.security.hb.security.MyUserDetailService">
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+    </bean>
+
+    <bean id="myAuthenticationSuccessHandler"
+          class="com.hyp.learn.security.hb.security.MyAuthenticationSuccessHandler"/>
+
+    <bean id="myAuthenticationFailureHandler"
+          class="com.hyp.learn.security.hb.security.MyAuthenticationFailureHandler"/>
+
+</beans>

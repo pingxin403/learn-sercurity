@@ -1,7 +1,8 @@
 package com.hyp.learn.dsm.gateway.utils;
 
-import com.daiyuchuan.security.distributed.gateway.entity.Result.ResponseResult;
-import com.daiyuchuan.security.distributed.gateway.entity.Result.ResultCodeEnum;
+
+import com.hyp.learn.dsm.gateway.entity.ResponseResult;
+import com.hyp.learn.dsm.gateway.entity.ResultCodeEnum;
 
 /**
  * 通用Restful返回工具

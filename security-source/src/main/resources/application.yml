@@ -1,0 +1,12 @@
+#debug=true
+# 数据源配置
+spring:
+  datasource:
+    url: jdbc:h2:mem:security;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: root
+    password: 123456
+
+  h2:
+    console:
+      enabled: true

@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.3.RELEASE</version>
+        <version>2.2.2.RELEASE</version>
     </parent>
 
     <modules>
@@ -20,6 +20,10 @@
         <module>security-spring-security</module>
         <module>security-spring-boot</module>
         <module>distributed-security-sc</module>
+        <module>security-httpbasic</module>
+        <module>security-source</module>
+        <!--接入第三方-->
+        <module>security-social</module>
 
     </modules>
 
@@ -27,8 +31,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-        <spring.version>5.2.2.RELEASE</spring.version>
-        <spring.security.version>5.2.1.RELEASE</spring.security.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -63,7 +65,6 @@
             </dependency>
 
 
-
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-jwt</artifactId>
@@ -84,94 +85,6 @@
                 <scope>test</scope>
             </dependency>
 
-            <!-- Spring -->
-            <!-- 1)包含Spring 框架基本的核心工具类。Spring 其它组件要都要使用到这个包里的类，是其它组件的基本核心 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 2)这个jar 文件是所有应用都要用到的，它包含访问配置文件、创建和管理bean 以及进行Inversion of Control
-                / Dependency Injection（IoC/DI）操作相关的所有类。如果应用只需基本的IoC/DI 支持，引入spring-core.jar
-                及spring-beans.jar 文件就可以了。 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 3)这个jar 文件为Spring 核心提供了大量扩展。可以找到使用Spring ApplicationContext特性时所需的全部类，JDNI
-                所需的全部类，instrumentation组件以及校验Validation 方面的相关类。 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 4) 这个jar 文件包含对Spring 对JDBC 数据访问进行封装的所有类。 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 5) 为JDBC、Hibernate、JDO、JPA等提供的一致的声明式和编程式事务管理。 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 6)Spring web 包含Web应用开发时，用到Spring框架时所需的核心类，包括自动载入WebApplicationContext特性的类、Struts与JSF集成类、文件上传的支持类、Filter类和大量工具辅助类。 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 7)包含SpringMVC框架相关的所有类。 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- 8)Spring test 对JUNIT等测试框架的简单封装 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <!-- 9)Spring test 对AOP的简单封装 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aspects</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <!-- 10)spring-context-support 提供了对第三方库集成到Spring上下文的支持 -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <!--spring security-->
-
-            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>5.2.1.RELEASE</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>5.2.1.RELEASE</version>
-            </dependency>
-
 
             <!--spring boot jsp-->
             <!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl -->
@@ -184,28 +97,28 @@
 
             <!-- 添加servlet依赖模块 -->
             <!--<dependency>-->
-                <!--<groupId>javax.servlet</groupId>-->
-                <!--<artifactId>javax.servlet-api</artifactId>-->
-                <!--<scope>provided</scope>-->
-                <!--<version>3.1.0</version>-->
+            <!--<groupId>javax.servlet</groupId>-->
+            <!--<artifactId>javax.servlet-api</artifactId>-->
+            <!--<scope>provided</scope>-->
+            <!--<version>3.1.0</version>-->
             <!--</dependency>-->
             <!-- 添加jstl标签库依赖模块 -->
             <!--<dependency>-->
-                <!--<groupId>javax.servlet</groupId>-->
-                <!--<artifactId>jstl</artifactId>-->
+            <!--<groupId>javax.servlet</groupId>-->
+            <!--<artifactId>jstl</artifactId>-->
             <!--</dependency>-->
             <!--添加tomcat依赖模块.-->
             <!--<dependency>-->
-                <!--<groupId>org.springframework.boot</groupId>-->
-                <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-                <!--<scope>provided</scope>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+            <!--<scope>provided</scope>-->
             <!--</dependency>-->
             <!-- 使用jsp引擎，springboot内置tomcat没有此依赖 -->
             <!--<dependency>-->
-                <!--<groupId>org.apache.tomcat.embed</groupId>-->
-                <!--<artifactId>tomcat-embed-jasper</artifactId>-->
-                <!--<scope>provided</scope>-->
-                <!--<version>9.0.30</version>-->
+            <!--<groupId>org.apache.tomcat.embed</groupId>-->
+            <!--<artifactId>tomcat-embed-jasper</artifactId>-->
+            <!--<scope>provided</scope>-->
+            <!--<version>9.0.30</version>-->
             <!--</dependency>-->
 
 
@@ -236,7 +149,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.47</version>
+                <version>8.0.17</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -245,18 +158,7 @@
             </dependency>
 
             <!-- 图片处理 -->
-            <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
-            <dependency>
-                <groupId>net.coobird</groupId>
-                <artifactId>thumbnailator</artifactId>
-                <version>0.4.8</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/com.github.penggle/kaptcha -->
-            <dependency>
-                <groupId>com.github.penggle</groupId>
-                <artifactId>kaptcha</artifactId>
-                <version>2.3.2</version>
-            </dependency>
+
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
@@ -268,15 +170,6 @@
                 <artifactId>jedis</artifactId>
                 <version>3.0.0</version>
             </dependency>
-
-            <!-- redis客户端:redisson -->
-            <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson</artifactId>
-                <version>3.11.6</version>
-            </dependency>
-
 
             <!--log-->
             <dependency>
@@ -300,8 +193,6 @@
                 <artifactId>lombok</artifactId>
                 <version>1.18.10</version>
             </dependency>
-
-
 
 
             <dependency>
@@ -356,26 +247,7 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.7.1</version>
                 </plugin>
-                <plugin>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.tomcat.maven</groupId>
-                    <artifactId>tomcat7‐maven‐plugin</artifactId>
-                    <version>2.2</version>
-                    <!--控制tomcat端口号 -->
-                    <configuration>
-                        <port>8080</port>
-                        <!-- 发布到tomcat后的名称 -->
-                        <!--/ 相当于把项目发布成ROOT -->
-                        <!--<path>/abc</path>-->
-                        <!--<path>/${project.artifactId}</path>-->
-                        <uriEncoding>UTF-8</uriEncoding>
-                        <!--  <finalName>love</finalName>
-                        <server>tomcat7</server> -->
-                    </configuration>
-                </plugin>
+
                 <plugin>
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-maven-plugin</artifactId>
@@ -392,29 +264,6 @@
                     </configuration>
                 </plugin>
 
-                <plugin>
-                    <artifactId>maven‐resources‐plugin</artifactId>
-                    <version>3.1.0</version>
-                    <configuration>
-                        <encoding>utf‐8</encoding>
-                        <useDefaultDelimiters>true</useDefaultDelimiters>
-                        <resources>
-                            <resource>
-                                <directory>src/main/resources</directory>
-                                <filtering>true</filtering>
-                                <includes>
-                                    <include>**/*</include>
-                                </includes>
-                            </resource>
-                            <resource>
-                                <directory>src/main/java</directory>
-                                <includes>
-                                    <include>**/*.xml</include>
-                                </includes>
-                            </resource>
-                        </resources>
-                    </configuration>
-                </plugin>
 
             </plugins>
 

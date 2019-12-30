@@ -36,5 +36,3 @@ feign:
       enabled: true
   hystrix:
     enabled: true
-logging:
-  level: info

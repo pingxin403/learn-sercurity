@@ -1,6 +1,6 @@
 package com.hyp.learn.dsm.gateway.config;
 
-import com.hyp.learn.ds.gateway.filter.AuthFilter;
+import com.hyp.learn.dsm.gateway.filter.AuthFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
