@@ -24,6 +24,8 @@
         <module>security-source</module>
         <!--接入第三方-->
         <module>security-social</module>
+        <module>security-oauth2</module>
+        <module>security-shiro</module>
 
     </modules>
 

@@ -4,6 +4,8 @@ import com.hyp.learn.security.securitysource.filter.ImageValidateCodeFilter;
 import com.hyp.learn.security.securitysource.filter.SmsValidateCodeFilter;
 import com.hyp.learn.security.securitysource.handler.MyAuthenticationFailureHandler;
 import com.hyp.learn.security.securitysource.handler.MyAuthenticationSuccessHandler;
+import com.hyp.learn.security.securitysource.handler.MyExpiredSessionStrategy;
+import com.hyp.learn.security.securitysource.handler.MyLogoutSuccessHandler;
 import com.hyp.learn.security.securitysource.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
     @Autowired
+    private MyLogoutSuccessHandler myLogoutSuccessHandler;
+
+    @Autowired
     private DataSource dataSource;
 
 
@@ -59,9 +64,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 // 配置需要认证的请求
                 .authorizeRequests()
-                .antMatchers("/login", "/code/image", "/code/sms").permitAll()
+                .antMatchers("/login", "/code/image", "/code/sms", "/session/invalid").permitAll()
                 .anyRequest()
                 .authenticated()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(myLogoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
                 .and()
                 // 登录表单相关配置
                 .addFilterBefore(imageValidateCodeFilter, UsernamePasswordAuthenticationFilter.class)
@@ -81,7 +92,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 // 登出相关配置
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .sessionManagement()
+                .invalidSessionUrl("/session/invalid")
+                .maximumSessions(1)
+                .expiredSessionStrategy(new MyExpiredSessionStrategy());
 
     }
 
